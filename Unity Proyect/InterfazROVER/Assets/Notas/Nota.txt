@@ -1,0 +1,24 @@
+La versión de Unity que todos debemos usar es la
+"2021.3.6.f1"
+
+El código del movimiento del robot se encuentra en
+la carpeta de Scripts:
+InterfazROVER/Assets/Scripts/MovimientoTopDown.cs
+
+Perdón por mi feo pixel art jsajasj, si alguien 
+puede hacer un mejor trabajo, estaré muy agradecido
+
+La carpeta actualmente es muy pesada, por el uso del
+asset del escenario, arreglaré eso pronto
+
+Copien la carpeta "InterfazROVER" directamente a la 
+carpeta donde Unity guarde y ejecute sus proyectos.
+En el Unity Hub en la sección de Projects y el botón
+de Open se selecciona esta carpeta y automáticamente
+se abre la interfaz
+
+El robot se mueve con las teclas W A S D 
+
+En la carpeta Utilidad en el main están los links que 
+usé para llegar a ese punto de la interfaz, los iré 
+actualizando conforme vaya avanzando.

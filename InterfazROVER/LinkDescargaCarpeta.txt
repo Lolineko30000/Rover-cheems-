@@ -1,7 +1,0 @@
-Github no permite subir archivos muy grandes, en la sección de Assets se encuentra el link de descarga de la carpeta
-
-Para usar el archivo deben copiar la carpeta completa del drive, ponerla en donde sea que abren sus archivos de Unity y descomprimir la carpeta Library.zip
-
-Link de descarga de la carpeta:
-https://drive.google.com/drive/folders/1Mqou2YlKy5AlgVRwSoZUmEiccoSvgm8Q?usp=sharing
-
