@@ -13,48 +13,29 @@ public class GeneradorObstaculos : MonoBehaviour
     public int largoMapa;
 
     //Esta línea es el mapa de datos (Matriz de dos dimensiones)
-    private int[,] mapData;
+    private int[,] matrizMapa;
     //Estos datos son una matriz de unos y ceros (0 no hay tile y 1 sí hay tile
 
     void Start()
     {
         //Configura todo el mapa con tiles
-        this.mapData = new int[this.anchoMapa, this.largoMapa];
+        this.matrizMapa = new int[this.anchoMapa, this.largoMapa];
         for(int i = 0; i < this.anchoMapa; i++)
-        {
             for(int j = 0; j < this.largoMapa; j++) 
-            {
-                this.mapData[i,j] = 1; 
-                //Sería interesante generarlo de forma aleatoria
-                //con algún algorítmo de probabilidad o algo así
-            }         
-        }
-            
+                this.matrizMapa[i,j] = 1; 
+                //Sería interesante generarlo de forma aleatoria con algún algorítmo de probabilidad o algo así
         this.generarObstaculo();
     }
 
     void generarObstaculo()
     {
         for(int i = 0; i < this.anchoMapa; i++)
-        {
             for(int j = 0; j < this.largoMapa; j++)
-            {
-                if(this.mapData[i,j] == 1)
-                {
-                    this.tilemap.SetTile
-                    (
-                        new Vector3Int(i, j, 0),
-                        this.tile
-                    );
-                }       
-            }
-        }
-            
-    }
-
-    void Update()
-    {
-        
-    }
+                if(this.matrizMapa[i,j] == 1)
+                    this.tilemap.SetTile(new Vector3Int(i, j, 0), this.tile);
+    }               
 }
-//Créditos a https://www.youtube.com/watch?v=kTbEGIfFeyI&t=169s
+/*
+Créditos a: 
+https://www.youtube.com/watch?v=kTbEGIfFeyI
+https://www.youtube.com/watch?v=eDOxDJEtE14 */
