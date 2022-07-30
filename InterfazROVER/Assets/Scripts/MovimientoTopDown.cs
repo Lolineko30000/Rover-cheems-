@@ -2,71 +2,106 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//No pongo acentos en el texto a proposito 
 public class MovimientoTopDown : MonoBehaviour
 {
-    //Estos valores pueden ser cambiados en Unity a consideración
     [SerializeField] private float velocidadMovimiento; 
     [SerializeField] private float velocidadRotacion;
-    [SerializeField] private Vector2 direccion;
-
-    private Rigidbody2D RoverDowneyJr; //Declaración de objeto (ROVER)
-
-    /*
-    Las funciones Start() y Update() funcionan muy parecido a SetUp() y loop() de Arduino
-    solo que aqui Update() se ejecuta una vez por frame
-    */
+ 
+    private float inputHorizontal, inputVertical;
+    private Rigidbody2D RoverDowneyJr;
 
     void Start() 
     {
         RoverDowneyJr = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    private void InputEntrada()
     {
-        //Esta linea indica posicion, direccion = vector(x,y) ; 0 < x < 1 & 0 < y < 1
-        //Justo esto es lo que necesitamos para cambiar los sprites
-        float valX = Input.GetAxisRaw("Horizontal");
-        float valY = Input.GetAxisRaw("Vertical");
-
-        direccion = new Vector2(valX, valY); 
-        float magnitudEntrada = Mathf.Clamp01(direccion.magnitude);
-        direccion.Normalize();
-
-        OrientacionRover(valX, valY);
+        inputHorizontal = Input.GetAxisRaw("Horizontal");
+        inputVertical = Input.GetAxisRaw("Vertical");
     }
 
-    private void FixedUpdate() //Esta función se ejecuta 50 veces por segundo
+    private void MoverRobot()
     {
-        //Esta parte del codigo es la que permite que el robot se mueva
-        RoverDowneyJr.MovePosition(RoverDowneyJr.position + direccion * velocidadMovimiento * Time.fixedDeltaTime);
+        if(inputVertical == 0)
+            RoverDowneyJr.velocity = Vector2.zero;
+        else if(inputVertical == 1)
+            RoverDowneyJr.velocity = transform.up * velocidadMovimiento;
+        else if(inputVertical == -1)
+            RoverDowneyJr.velocity = -transform.up * velocidadMovimiento;
+    }
+
+    private void RotarRobot()
+    {
+        if(inputVertical == 0)
+            return;
+
+        float rotacion = -inputHorizontal * velocidadRotacion;
+            transform.Rotate(Vector3.forward * rotacion);
+    }
+
+    void Update()
+    {
+        InputEntrada();
+    }
+
+    void FixedUpdate()
+    {
+        MoverRobot();
+        RotarRobot();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    /*
+    void Update()
+    {
+        float inputHorizontal = Input.GetAxisRaw("Horizontal");
+        float inputVertical = Input.GetAxisRaw("Vertical");
+        //Esta linea indica posicion, direccionMovimiento = vector(x,y) ; 0 < x < 1 & 0 < y < 1
+        direccionMovimiento = new Vector2(inputHorizontal, inputVertical);
+        float magnitudEntrada = Mathf.Clamp01(direccionMovimiento.magnitude);
+        direccionMovimiento.Normalize();
+
+        transform.Translate(direccionMovimiento * velocidadMovimiento * magnitudEntrada * Time.deltaTime, Space.World);
+
+        /*
+        if(direccionMovimiento != Vector2.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, direccionMovimiento);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, velocidadRotacion * Time.deltaTime);
+        }
+        //
     }
 
     /*
-    private bool viendoArriba = true;
-    private bool viendoIzquierda;
-    private bool viendoDerecha;
-    private bool viendoAbajo;
-    //Debug.Log("a");
-    */
-
-    void OrientacionRover(float x, float y)
+    private void FixedUpdate() //Esta función se ejecuta 50 veces por segundo
     {
-        /*
-        if(x > 0) //Va a la derecha
-
-        else if(x < 0) //Va a la izquierda
-        */
-
-        //Declaracion de no se k
-        if(direccion != Vector2.zero)
-        {
-            Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, direccion);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, velocidadRotacion * Time.deltaTime);
-        }
-        
-
+        //Esta parte del codigo es la que permite que el robot se mueva
+        RoverDowneyJr.MovePosition(RoverDowneyJr.position + direccionMovimiento * velocidadMovimiento * Time.fixedDeltaTime);
     }
-    
-
+    //*/
 }

@@ -25,11 +25,6 @@ public class GeneradorObstaculos : MonoBehaviour
                 this.matrizMapa[i,j] = 1; 
                 //Sería interesante generarlo de forma aleatoria con algún algorítmo de probabilidad o algo así
         this.generarObstaculo();
-
-        //Línea de prueba
-        float bias = UnityEngine.Random.Range(-0.5f, 0.5f);
-
-        Debug.Log("Numero generado: " + bias);
     }
 
     void generarObstaculo()

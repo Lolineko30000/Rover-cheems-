@@ -849,7 +849,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   robot: {fileID: 1449445971}
-  velocidadMovimiento: 1
+  velocidadMovimiento: 5
+  velocidadRotacion: 1
 --- !u!1 &656150222
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,8 +1366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocidadMovimiento: 5
-  velocidadRotacion: 8
-  direccion: {x: 0, y: 0}
+  velocidadRotacion: 2.5
 --- !u!50 &1449445968
 Rigidbody2D:
   serializedVersion: 4

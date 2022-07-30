@@ -6,13 +6,15 @@ public class ControlCamara : MonoBehaviour
 {
     //Script tomado de asset "Cainos" de Asset Store de Unity
     public Transform robot;
-    public float velocidadMovimiento = 1.2f;
+    [SerializeField] private float velocidadMovimiento;
+    [SerializeField] private float velocidadRotacion;
 
     private Vector3 offset; 
     private Vector3 posicionRobot;
 
     private void Start()
     {
+        //Si no hay un modelo de robot asociado, la cámara no va a moverse/seguir a nadie
         if(robot == null) 
             return;
         offset = transform.position - robot.position;
