@@ -6,12 +6,20 @@ public class Rober_Cheems
 {
 
     private int[] capas;  // Representacion del numero de neuronas por capa
-    private float[][] neuronas;   
+    private float[][] neuronas;  //Matriz done se uardaran os calculospara lafuncion Feed fordwar
     private float[][] cesgos;  //Biases
     private float[][][] pesos; //Weights
 
-    public float fit;
+    public float fit; //Taza de aprenizaje para el aloritmo d desenso por gradiente
 
+
+    /*
+        Constructor
+        Argumentos:
+            capas: arreglo de enteros, con el numero de neuronas correspondientes a cada capa
+            fit: taza de aprendizaje oara el algoritmo de entrenamiento
+
+    */
     public Rober_Cheems(int[] capas, float fit)
     {
         this.capas = new int[capas.Length];
@@ -19,7 +27,7 @@ public class Rober_Cheems
         for(int i = 0 ; i < capas.Length ; i++)
             this.capas[i] = capas[i];
 
-        init_neuronas();
+        init_neuronas();    //Funciones auxilliares para la inicializacion del los arreglos
         init_cesgos();
         init_pesos();
 
@@ -35,36 +43,44 @@ public class Rober_Cheems
     }
 
     //Funcion de salida de la red
+    /*
+    Argumentos:
+        entrada: Arreglo de flotantes con la misma dimension a la primera capa de la red
+    */
+
     public float[] feed_fordward(float [] entrada)
     {
         for(int i = 0 ; i < entrada.Length ; i++ ) neuronas[0][i] = entrada[i];
         
         for(int i = 1 ; i < capas.Length ; i++)
         {
-            //int capa_actual = i-1;
             for(int j = 0 ; j < neuronas[j].Length ; j++)
             {
                 float suma = 0f;
                 for(int k = 0; k < neuronas[i-1].Length; k++)
                 {
-                    suma += pesos[i-1][j][k] * neuronas[i-1][k];
+                    suma += pesos[i-1][j][k] * neuronas[i-1][k]; // Producto punto
                 }
-                neuronas[i][j] = funcion_activacion(suma + cesgos[i][j]);
+                neuronas[i][j] = funcion_activacion(suma + cesgos[i][j]); // Funcion e activacion para cada capa
             }
 
         }
 
-        neuronas[neuronas.Length-1] = soft_max(neuronas[neuronas.Length-1]);
+        neuronas[neuronas.Length-1] = soft_max(neuronas[neuronas.Length-1]);//Solo a la ultima capa se le aplica la funcion softmax
 
-        return neuronas[neuronas.Length-1];  
+        return neuronas[neuronas.Length-1];  //Salida correspondiente a la dimension de la ultima capa de la red.
     }
 
     //Funcion para representar la salida en forma de probabilidades
+    /*
+    Argumentos:
+        salida: Arreglo en la ultima caoa de la red
+    */
     public float[] soft_max(float[] salida)
     {
         float[] probabilidades = new float[salida.Length];
         float suma = 0f;
-        for(int i = 0; i < salida.Length ; i++)
+        for(int i = 0; i < salida.Length ; i++) //Suma de cada entrada
             suma += (float)Math.Exp(salida[i]);
     
         for(int i = 0 ; i < salida.Length; i++)
@@ -73,10 +89,21 @@ public class Rober_Cheems
         return probabilidades;
     }
 
-    //Funcion de aprendizaje 
+    //Funcion de entrenamiento
+    /*
+        Argumentos:
+        probablilidades: Salida de la red contra un caso especifico
+        entradas: Entradas dadas para ese ejemplo especifico
+        salida_correcta: Arreglo en forma de one_hot vector de la misma dimension de la salida
+                ejemplo -> [0,0,1] si la dimension de la salida fuera de 3 y la salida correcta fuera 2 (iniciuando el indice desde 0)
+    */
     public void decenso_xgradiente(float[] probabilidades, float[] entradas, float[] salida_correcta)
     {
 
+        /*
+            Para la ultima capa se realiza primero la resta de y_hat y y 
+            para calcular la derivada y asi realizar la retropropagacion
+        */
         float[][] derivada_z = new float[1][];
         derivada_z[0] = new float[probabilidades.Length];
         for(int i = 0; i < probabilidades.Length; i++)
@@ -93,10 +120,17 @@ public class Rober_Cheems
         
         float[][] derivada_w = multiplicacion_matrices(vector_transpuesto_a, derivada_z);
         
+        //Actualizacion de los pesos y de los cesgos de la ultima capa
         actualizar_pesos(derivada_w, pesos.Length-1);
         actualizar_cesgos(derivada_z, cesgos.Length-1);
-
         
+
+
+        /*
+            Inicio de la retropropagacion 
+            ya calculada las derivadas, se raliza un proceso iteratvo para todas las capas,
+            esto para poder calcular las derivadas y con ello el gradiente.
+        */
         for(int i = pesos.Length-1; i >= 1  ; i-- )
         {
             Console.WriteLine(i);
@@ -105,7 +139,7 @@ public class Rober_Cheems
             derivada_z = transpuesta(derivada_a);
             
             
-            
+            //Retropropagacion para la funcion RELU
             for(int j = 0; j < derivada_a[0].Length; j++)
             {
                 if(derivada_a[0][j] >= 0) 
@@ -123,6 +157,7 @@ public class Rober_Cheems
 
             derivada_w = multiplicacion_matrices(transpuesta(derivada_z), neuronas_temporales);
             
+            //Actualizacion de las capas desde la ultima a la primera.
             actualizar_pesos(derivada_w, i);
             actualizar_cesgos(derivada_z, i);
         }
@@ -131,18 +166,19 @@ public class Rober_Cheems
 
 
 
-
+    //Funcion logaritmica recomendada para el aprendizaje de la red
     private float funcion_perdida(float probabilidad)
     {
         return -((float)Math.Log(probabilidad));
     }
 
-
+    //Funcion auxiliar para el algoritmo de entrenamiento
     private void actualizar_pesos(float[][] dw , int capa)
     {
         pesos[capa] = resta_matrices(pesos[capa], multiplicacion_escalar_matriz(dw,fit));
     }
 
+    //Funcion auxiliar para el algoritmo de entrenamiento
     private void actualizar_cesgos(float[][] db , int capa)
     {
         
@@ -158,6 +194,7 @@ public class Rober_Cheems
         }
     }
 
+    //Funcion que retorna la transpuesta de una matriz o vector, necesaria para el algoritmo de entrenamiento
     private float[][] transpuesta(float[][] matriz)
     {
         int c1 = matriz.Length;
@@ -175,6 +212,7 @@ public class Rober_Cheems
         return resultado;
     }
 
+    //Multiplicacion escalar estandard 
     private float[][] multiplicacion_escalar_matriz(float[][] a, float alpha)
     {
         int f1 = a.Length;
@@ -192,6 +230,7 @@ public class Rober_Cheems
         return resultado;
     }
 
+    //Multiplicacion escalar estandard 
     private float[] multiplicacion_escalar_vector(float[] a, float alpha)
     {
         float[] resultado = new float[a.Length];
@@ -200,6 +239,8 @@ public class Rober_Cheems
         return resultado;
     }
 
+    //Resta de matrices estandard
+    //Ambas matrices deben tener el mismo tamanio. 
     private float[][] resta_matrices(float[][] a, float[][] b)
     {
         int f1 = a.Length;
@@ -217,6 +258,7 @@ public class Rober_Cheems
         return resultado;
     }
 
+    //Multiplicacion de matrices estandar, necesario para el aloritmo de entrenamiento
     private float[][] multiplicacion_matrices(float[][] a, float[][] b)
     {
         int f1 = a.Length;
@@ -244,14 +286,13 @@ public class Rober_Cheems
                 }
                 resultado[i][j] = suma_temporal;
             }
-
         }
 
         return resultado;
     }
 
 
-
+    //Funcion de costo, implementada paraobservar el prograso de la red
     private float funcion_costo(float[] probabilidades, int  numero_muestras)
     {
         float denominador = 0;
@@ -269,16 +310,18 @@ public class Rober_Cheems
 
 
 
-
+    /*
     private float abs(float x)
     {
         if(x < 0) return -x;
         return x;
     }
+    */
 
     //Funciones auxiliares para la instancia de la red
     //===================================================
 
+    //Funcin para iniciar la matriz de neuronas
     private void init_neuronas()
     {
         List<float[]> lista_neuronas = new List<float[]>();
@@ -292,7 +335,8 @@ public class Rober_Cheems
 
 
 
-
+    //Funcion para iniciar la matriz de cesgos 
+    //Se inicial aleatoreamente con ayuda de funciones del Unity
     private void init_cesgos()
     {
         List<float[]> lista_biases = new List<float[]>();
@@ -312,9 +356,8 @@ public class Rober_Cheems
     }
 
 
-
-
-
+    //Funcion oara iniciar la matriz de pesos
+    //Se inicial aleatoreamente con ayuda de funciones del Unity
     private void init_pesos()
     {
         List<float[][]> lista_pesos = new List<float[][]>();
