@@ -883,8 +883,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 11400000, guid: 188f5e608a7b68841b5b995adeff0688, type: 2}
   tilemap: {fileID: 697653483}
-  anchoMapa: 32
-  largoMapa: 32
+  anchoMapa: 40
+  largoMapa: 40
 --- !u!156049354 &656150224
 Grid:
   m_ObjectHideFlags: 0

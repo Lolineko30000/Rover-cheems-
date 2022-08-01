@@ -78,8 +78,8 @@ public class MenuPausa : MonoBehaviour
 
     public void Cerrar()
     {
-        Debug.Log("Cerrando juego");
-        Application.Quit();
+        Debug.Log("Saliendo al menu de inicio");
+        SceneManager.LoadScene(0);
     }
 
 }

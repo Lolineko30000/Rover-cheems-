@@ -24,8 +24,20 @@ public class GeneradorObstaculos : MonoBehaviour
             for(int j = 0; j < this.largoMapa; j++) 
                 this.matrizMapa[i,j] = 1; 
                 //Sería interesante generarlo de forma aleatoria con algún algorítmo de probabilidad o algo así
-        this.generarObstaculo();
+        this.generarBarreras();
+        //this.generarObstaculo();
     }
+
+    void generarBarreras()
+    {
+        for(int i = 0; i < this.anchoMapa; i++)
+            for(int j = 0; j < this.largoMapa; j++)
+                this.tilemap.SetTile(new Vector3Int(i, j, 0), this.tile);
+
+    }
+
+
+
 
     void generarObstaculo()
     {
