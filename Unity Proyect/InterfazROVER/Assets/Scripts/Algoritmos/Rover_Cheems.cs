@@ -9,7 +9,6 @@ public class Rober_Cheems
     private float[][] neuronas;   
     private float[][] cesgos;  //Biases
     private float[][][] pesos; //Weights
-    private float[][] activacion;  
 
     public float fit;
 
@@ -28,10 +27,11 @@ public class Rober_Cheems
     }
 
 
-    //Funcion sigmoide 
+    //Funcion RELU 
     private float funcion_activacion(float x)
     {
-        return (float)(1/(1+Math.Exp(-x)));
+        if(x <= 0 ) return 0;
+        return x;
     }
 
     //Funcion de salida de la red
@@ -54,8 +54,9 @@ public class Rober_Cheems
 
         }
 
+        neuronas[neuronas.Length-1] = soft_max(neuronas[neuronas.Length-1]);
 
-        return soft_max(neuronas[neuronas.Length-1]);  
+        return neuronas[neuronas.Length-1];  
     }
 
     //Funcion para representar la salida en forma de probabilidades
@@ -73,85 +74,192 @@ public class Rober_Cheems
     }
 
     //Funcion de aprendizaje 
-    public void decenso_xgradiente(float[] entrada,float[] salida_deseada, int iteraciones,float convergencia)
+    public void decenso_xgradiente(float[] probabilidades, float[] entradas, float[] salida_correcta)
     {
 
-        float costo_previo = 0;
-        float costo_actual = 0;
-        float derivada_pesos = 0;
-        float derivada_cesgos = 0;
+        float[][] derivada_z = new float[1][];
+        derivada_z[0] = new float[probabilidades.Length];
+        for(int i = 0; i < probabilidades.Length; i++)
+            derivada_z[0][i] = probabilidades[i] - salida_correcta[i];
 
-        for(int i = 0; i < iteraciones ; i++)
+        int dimension_a = neuronas[neuronas.Length-1].Length;
+        float[][] vector_transpuesto_a = new float[dimension_a][];
+        for(int i = 0; i < dimension_a; i++)
         {
-            float[] salida_dada = feed_fordward(entrada);
-            costo_actual = funcion_costo(salida_deseada, salida_dada);
+            vector_transpuesto_a[i] = new float[1];
+            vector_transpuesto_a[i][0] = neuronas[neuronas.Length-1][i];
+        }
+        
+        
+        float[][] derivada_w = multiplicacion_matrices(vector_transpuesto_a, derivada_z);
+        
+        actualizar_pesos(derivada_w, pesos.Length-1);
+        actualizar_cesgos(derivada_z, cesgos.Length-1);
 
-            if(costo_previo > 0 && abs(costo_previo- costo_actual) <= convergencia)
+        
+        for(int i = pesos.Length-1; i >= 1  ; i-- )
+        {
+            Console.WriteLine(i);
+            
+            float[][] derivada_a = multiplicacion_matrices(pesos[i], transpuesta(derivada_z));
+            derivada_z = transpuesta(derivada_a);
+            
+            
+            
+            for(int j = 0; j < derivada_a[0].Length; j++)
             {
-                break;
+                if(derivada_a[0][j] >= 0) 
+                {
+                    derivada_z[0][j] = derivada_a[0][j];
+                }
+                else
+                {
+                    derivada_z[0][j] = 0;
+                }
             }
 
-            costo_actual = costo_previo;
-            derivada_pesos = calcular_derivada_pesos(entradas.Length, entrada, salida_dada, salida_deseada);
-            derivada_cesgos = calcular_derivada_cesgos(entradas.Length, salida_dada, salida_deseada);
+            float[][] neuronas_temporales = new float[1][];
+            neuronas_temporales[0] = neuronas[i-1];
 
-            actualizar_pesos(derivada_pesos);
-            actualizar_cesgos(derivada_cesgos);
-
-        }
-    }
-
-    private float calcular_derivada_pesos(int n, float[] entradas, float[] salida_dada, float[] salida_deseada)
-    {
-        float suma = 0;
-        for(int i = 0 ; i < salida_dada.Length; i++)
-        {
-
-        }   
-
-        return (-2/n)*suma;
-    }
-
-    private float calcular_derivada_cesgos(int n, float[] salida_dada, float[] salida_deseada)
-    {
-        float suma = 0;
-        for(int i = 0 ; i < salida_dada.Length; i++)
-        {
-            suma += salida_deseada[i] - salida_dada[i];
+            derivada_w = multiplicacion_matrices(transpuesta(derivada_z), neuronas_temporales);
+            
+            actualizar_pesos(derivada_w, i);
+            actualizar_cesgos(derivada_z, i);
         }
 
-        return (-2/n)*suma;
     }
 
 
-    private void actualizar_pesos(float derivada)
-    {
-        for(int i = 0 ; i < pesos.Length ; i++)
-            for(int j = 0 ; j < pesos[i].Length ; j++)
-                for(int k = 0 ; k < pesos[i][j].Length ; k++)
-                    pesos[i][j][k] -= fit*derivada; 
-    }
 
-    private void actualizar_cesgos(float derivada)
-    {
-        for(int i = 0 ; i < cesgos.Length ; i++)
-            for(int j = 0 ; j < cesgos[i].Length ; j++)
-                cesgos[i][j] -= fit*derivada; 
-    }       
 
     private float funcion_perdida(float probabilidad)
     {
         return -((float)Math.Log(probabilidad));
     }
 
-    private float funcion_costo(float[] probabilidades)
+
+    private void actualizar_pesos(float[][] dw , int capa)
+    {
+        pesos[capa] = resta_matrices(pesos[capa], multiplicacion_escalar_matriz(dw,fit));
+    }
+
+    private void actualizar_cesgos(float[][] db , int capa)
+    {
+        
+        float[] dbxalpha = new float[db[0].Length];
+        for(int i = 0; i < db.Length ; i++)
+            dbxalpha[i] = db[i][0];
+        
+        dbxalpha = multiplicacion_escalar_vector(dbxalpha, fit);
+        
+        for(int i = 0; i < db.Length ; i++)
+        {
+            cesgos[capa][i] -= dbxalpha[i];
+        }
+    }
+
+    private float[][] transpuesta(float[][] matriz)
+    {
+        int c1 = matriz.Length;
+        int f1 = matriz[0].Length;
+        float[][] resultado = new float[f1][];
+        for(int i =0 ; i < f1 ; i++)
+        {
+            resultado[i] = new float[c1];
+        }
+
+        for(int i =0 ; i < f1 ; i++)
+            for(int j =0 ; j < c1 ; j++)
+                resultado[i][j] = matriz[j][i];
+
+        return resultado;
+    }
+
+    private float[][] multiplicacion_escalar_matriz(float[][] a, float alpha)
+    {
+        int f1 = a.Length;
+        int c1 = a[0].Length;
+        float[][] resultado = new float[f1][];
+        for(int i =0 ; i < f1 ; i++)
+        {
+            resultado[i] = new float[c1];
+        }
+
+        for(int i =0 ; i < f1 ; i++)
+            for(int j =0 ; j < c1 ; j++)
+                resultado[i][j] = alpha*a[i][j];
+
+        return resultado;
+    }
+
+    private float[] multiplicacion_escalar_vector(float[] a, float alpha)
+    {
+        float[] resultado = new float[a.Length];
+        for(int i =0 ; i < a.Length ; i++)
+            resultado[i] = alpha*a[i];
+        return resultado;
+    }
+
+    private float[][] resta_matrices(float[][] a, float[][] b)
+    {
+        int f1 = a.Length;
+        int c1 = a[0].Length;
+        float[][] resultado = new float[f1][];
+        for(int i =0 ; i < f1 ; i++)
+        {
+            resultado[i] = new float[c1];
+        }
+
+        for(int i =0 ; i < f1 ; i++)
+            for(int j =0 ; j < c1 ; j++)
+                resultado[i][j] = a[i][j] - b[i][j];
+
+        return resultado;
+    }
+
+    private float[][] multiplicacion_matrices(float[][] a, float[][] b)
+    {
+        int f1 = a.Length;
+        int c1 = a[0].Length;
+        int f2 = b.Length;
+        int c2 = b[0].Length;
+        float suma_temporal = 0;
+        
+            
+
+        float[][] resultado = new float[f1][];
+        for(int i =0 ; i < f1 ; i++)
+        {
+            resultado[i] = new float[c2];
+        }
+
+        for(int i =0 ; i < f1 ; i++)
+        {
+            for(int j =0 ; j < c2 ; j++)
+            {
+                suma_temporal = 0;
+                for(int k =0 ; k < c1 ; k++)
+                {
+                    suma_temporal += a[i][k] * b[k][j];
+                }
+                resultado[i][j] = suma_temporal;
+            }
+
+        }
+
+        return resultado;
+    }
+
+
+
+    private float funcion_costo(float[] probabilidades, int  numero_muestras)
     {
         float denominador = 0;
         float perdida = 0;
-        int m = probabilidades.Length;
+        int m = numero_muestras;
 
         for(int i = 0; i < m ; i++)
-            denominador += Math.Exp(probabilidades[i]);
+            denominador += (float)Math.Exp(probabilidades[i]);
 
         for(int i = 0; i < m ; i++)
             perdida += funcion_perdida(probabilidades[i]/denominador);
@@ -159,19 +267,8 @@ public class Rober_Cheems
         return (1/m)*perdida;
     }
 
-    /*
-    private float funcion_costo(float[] salida, float[] salida_deseada)
-    {
-        float suma = 0;
-        
-        for(int i = 0; i < salida.Length; i++)
-        {
-            suma += (salida[i]-salida_deseada[i])*(salida[i]-salida_deseada[i]);
-        }
 
-        return ((float)Math.Sqrt(suma))/salida.Length;
-    }
-    */
+
 
     private float abs(float x)
     {
@@ -206,6 +303,7 @@ public class Rober_Cheems
             for(int j = 0 ; j < capas[i] ; j++)
             {
                 cesgo[j] = UnityEngine.Random.Range(-0.5f, 0.5f);
+                //cesgo[j] = 0.5f;
             }
             lista_biases.Add(cesgo);
         }
@@ -232,6 +330,7 @@ public class Rober_Cheems
                 for(int k = 0; k < neuronas_capa_anterior; k++)
                 {
                     pesos_neuronas[k] = UnityEngine.Random.Range(-0.5f, 0.5f);
+                    //pesos_neuronas[k] = 0.5f;
                 }
                 lista_pesos_xcapa.Add(pesos_neuronas);
             }
