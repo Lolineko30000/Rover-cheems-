@@ -33,8 +33,8 @@ public class MovimientoTopDown : MonoBehaviour
 
     private void RotarRobot()
     {
-        if(inputVertical == 0)
-            return;
+        //if(inputVertical == 0)
+        //    return;
 
         float rotacion = -inputHorizontal * velocidadRotacion;
             transform.Rotate(Vector3.forward * rotacion);

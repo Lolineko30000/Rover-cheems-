@@ -949,7 +949,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12, y: 12, z: -10}
+  m_LocalPosition: {x: 0.04, y: 12, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1004,8 +1004,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 697653483}
   tileBarrera: {fileID: 11400000, guid: 188f5e608a7b68841b5b995adeff0688, type: 2}
-  anchoMapa: 40
-  largoMapa: 40
+  anchoMapa: 31
+  largoMapa: 23
 --- !u!156049354 &656150224
 Grid:
   m_ObjectHideFlags: 0
@@ -1051,9 +1051,9 @@ MonoBehaviour:
   tileEscenario: {fileID: 11400000, guid: e2cf71b378016364099b8cc66994f44f, type: 2}
   tileDecorativo1: {fileID: 11400000, guid: ca80e528ae68f444eae2b1d3f1e2c6ef, type: 2}
   tileDecorativo2: {fileID: 11400000, guid: 6714811349a4f6447a46b39d1817f558, type: 2}
-  numeroDecoraciones: 90
-  ancho: 40
-  largo: 40
+  numeroDecoraciones: 150
+  ancho: 31
+  largo: 23
 --- !u!1 &697653482
 GameObject:
   m_ObjectHideFlags: 0
@@ -1615,7 +1615,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1449445966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12, y: 12, z: 0}
+  m_LocalPosition: {x: 0.04, y: 12.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
