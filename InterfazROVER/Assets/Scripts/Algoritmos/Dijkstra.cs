@@ -34,10 +34,10 @@ public class Dijkstra
 
         Disttancia maxima: Distancia maima entre dos nodos
     */
-    private static int indice_distancia_minima(double[] distancias, bool[] visitados, int numero_nodos, double distancia_maxima)
+    private static int indice_distancia_minima(double[] distancias, bool[] visitados, int numero_nodos)
     {
         int indice_minimo = 0;
-        double distancia_minima = distancia_maxima+1;
+        double distancia_minima = 100000000;
 
         for(int i = 0 ; i< numero_nodos ; i++)
         {
@@ -69,7 +69,7 @@ public class Dijkstra
         nodo m,eta: nodo al que se desea construir el camino
 
     */
-    public static List<int> dijkstra(double[,] lista_de_adyacencia, int numero_nodos, double distancia_maxima, int nodo_inicial, int nodo_meta)
+    public static List<int> dijkstra(double[,] lista_de_adyacencia, int numero_nodos, int nodo_inicial, int nodo_meta)
     {
 
         double[] distancias = new double[numero_nodos];       //Lista de distancias de un nodo a otro
@@ -87,14 +87,15 @@ public class Dijkstra
 
         for(int i = 0; i < numero_nodos-1; i++)
         {
-            int indice_minimo = indice_distancia_minima(distancias, visitados, numero_nodos, distancia_maxima);
+            int indice_minimo = indice_distancia_minima(distancias, visitados, numero_nodos);
             visitados[indice_minimo] = true;            //Visitando los nodos correspondientes (El que tenga la distancia minima ya guardada)
 
             for(int j = 0; j < numero_nodos; j++)
             {
                 if(visitados[j] == false &&                                                          // En caso de que no haya sido visitado , este conectado al nodo actua                             // y que se mejore la distancia se agrega a nuestro arreglo
                     (distancias[indice_minimo] + lista_de_adyacencia[indice_minimo,j]) < distancias[j] &&
-                    lista_de_adyacencia[indice_minimo,j] != 0
+                    lista_de_adyacencia[indice_minimo,j] != 0 &&
+                    distancias[indice_minimo] < 100000000
                 )
                 {
                     distancias[j] = distancias[indice_minimo] + lista_de_adyacencia[indice_minimo,j];
