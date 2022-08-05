@@ -4,23 +4,43 @@ using UnityEngine;
 
 public class OndasRover : MonoBehaviour
 {
+
+    private GameObject ondaDerecha;
+    private GameObject ondaIzquierda;
+    private GameObject ondaDerecho;
+
     [SerializeField] private Transform controlOndaDerecha;
     [SerializeField] private Transform controlOndaIzquierda;
     [SerializeField] private Transform controlOndaDerecho;
+    //Las tres ondas correspondientes a cada sensor
+
     [SerializeField] private GameObject onda;
+    //Objeto del prefab con las caracteristicas de la onda
 
     private void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
-        {
-            LanzarOnda();
-        }
+        //temporal
+        //if(Input.GetButtonDown("Fire1"))
+        //{
+             StartCoroutine(LanzarOnda());
+        //}
     }
 
-    private void LanzarOnda()
+    private IEnumerator LanzarOnda()
     {
-        Instantiate(onda, controlOndaDerecho.position, controlOndaDerecho.rotation );
-        Instantiate(onda, controlOndaIzquierda.position,controlOndaIzquierda.rotation );
-        Instantiate(onda, controlOndaDerecha.position,controlOndaDerecha.rotation );
+        ondaDerecho = Instantiate(onda, controlOndaDerecho.position, controlOndaDerecho.rotation );
+        ondaDerecha = Instantiate(onda, controlOndaIzquierda.position,controlOndaIzquierda.rotation );
+        ondaIzquierda =Instantiate(onda, controlOndaDerecha.position,controlOndaDerecha.rotation );
+
+        yield return new WaitForSeconds(3);
+
+        float derecho = Vector3.Distance(ondaDerecho.transform.position, transform.position);
+        float derecha = Vector3.Distance(ondaDerecha.transform.position, transform.position);
+        float izquierdo = Vector3.Distance(ondaIzquierda.transform.position, transform.position);
+
+        Debug.Log("Derecho= " + derecho);
+        Debug.Log("Derecha= " + derecha);
+        Debug.Log("Izquierda= " + izquierdo);
+
     }
 }

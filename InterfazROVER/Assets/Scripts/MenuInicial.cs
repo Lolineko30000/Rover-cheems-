@@ -44,7 +44,7 @@ public class MenuInicial : MonoBehaviour
 
     public void EscenaTerrestre()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 4);
     }
 
     public void EscenaMarciana()

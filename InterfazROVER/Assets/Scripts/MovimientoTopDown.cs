@@ -30,7 +30,6 @@ public class MovimientoTopDown : MonoBehaviour
             Grafo grafo = aux.GetComponent <Grafo> ();
             camino = grafo.camino;
             nodos = grafo.nodos;
-
             //control = true;
             index = 0;
         }
@@ -74,6 +73,7 @@ public class MovimientoTopDown : MonoBehaviour
             }
             if(index != camino.Count)
             {
+                Distancia();
                 transform.position = Vector3.MoveTowards(transform.position, nodos[camino[index]].position, Time.deltaTime * 4f);
                 
                 Vector3 NodoSiguiente = nodos[camino[index]].position - transform.position;
@@ -96,8 +96,11 @@ public class MovimientoTopDown : MonoBehaviour
 
     void Distancia()
     {
+        //Debug.Log(nodos[camino[index]].position);
         if(!control && Vector3.Distance(transform.position, nodos[camino[index]].position) < 0.5 && index != camino.Count-1)
+        {
             index++;
+        }
     }
 
 
