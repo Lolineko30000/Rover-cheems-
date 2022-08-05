@@ -9,7 +9,6 @@ public class MovimientoTopDown : MonoBehaviour
     [SerializeField] private float velocidadMovimiento; 
     [SerializeField] private float velocidadRotacion;
     public bool control;
-    public bool done;
     public int index;
     //Orden de los nodos ue ebe ir recorriendo
     public List<int> camino;
@@ -24,14 +23,17 @@ public class MovimientoTopDown : MonoBehaviour
         RoverDowneyJr = GetComponent<Rigidbody2D>();
         
         //Lineas especiales para obtener el camino del script del grafo.
-        GameObject aux = GameObject.Find("Grafo");
-        Grafo grafo = aux.GetComponent <Grafo> ();
-        camino = grafo.camino;
-        nodos = grafo.nodos;
 
-        control = false;
-        done = false;
-        index = 0;
+        if(!control)
+        { 
+            GameObject aux = GameObject.Find("Grafo");
+            Grafo grafo = aux.GetComponent <Grafo> ();
+            camino = grafo.camino;
+            nodos = grafo.nodos;
+
+            //control = true;
+            index = 0;
+        }
     }
 
     private void InputEntrada()
@@ -94,7 +96,7 @@ public class MovimientoTopDown : MonoBehaviour
 
     void Distancia()
     {
-        if(Vector3.Distance(transform.position, nodos[camino[index]].position) < 0.5 && index != camino.Count-1)
+        if(!control && Vector3.Distance(transform.position, nodos[camino[index]].position) < 0.5 && index != camino.Count-1)
             index++;
     }
 
