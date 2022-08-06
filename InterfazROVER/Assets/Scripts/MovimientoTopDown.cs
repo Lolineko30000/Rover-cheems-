@@ -8,15 +8,21 @@ public class MovimientoTopDown : MonoBehaviour
 {
     [SerializeField] private float velocidadMovimiento; 
     [SerializeField] private float velocidadRotacion;
+    private float inputHorizontal, inputVertical;
+    private Rigidbody2D RoverDowneyJr;
+    
+
     public bool control;
     public int index;
     //Orden de los nodos ue ebe ir recorriendo
     public List<int> camino;
     //Cordenadas de los nodos
     public List<Transform> nodos;
- 
-    private float inputHorizontal, inputVertical;
-    private Rigidbody2D RoverDowneyJr;
+
+    //Variable necesarias para los sensores por raycast
+    public float distanciaSensor = 5f;
+    public float posicionSensorRover = 1f;  
+    
 
     void Start() 
     {
@@ -25,7 +31,8 @@ public class MovimientoTopDown : MonoBehaviour
         //Lineas especiales para obtener el camino del script del grafo.
 
         if(!control)
-        { 
+        {
+            //Importamos los datos de otro script de grafo 
             GameObject aux = GameObject.Find("Grafo");
             Grafo grafo = aux.GetComponent <Grafo> ();
             camino = grafo.camino;
@@ -64,6 +71,7 @@ public class MovimientoTopDown : MonoBehaviour
     void Update()
     {
         if(control)
+
             InputEntrada();
         else
         {
@@ -79,19 +87,43 @@ public class MovimientoTopDown : MonoBehaviour
                 Vector3 NodoSiguiente = nodos[camino[index]].position - transform.position;
                 float angulo =  Mathf.Atan2(NodoSiguiente.y,NodoSiguiente.x)*Mathf.Rad2Deg;
                 Quaternion q = Quaternion.AngleAxis(angulo-90f, Vector3.forward);
-                transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 4f);
-               // Debug.Log(Vector3.Distance(transform.position, nodos[camino[index]].position));
+                transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 2.5f);
             }
         }
+
+        RaycastHit2D choque;
+        Vector2 posicionInicialSensor = transform.position;
+        posicionInicialSensor.x += posicionSensorRover;
+
+        choque = Physics2D.Raycast(posicionInicialSensor, transform.forward, distanciaSensor);
+        if(choque.collider != null)
+        {
+            Debug.Log("derecha");
+            Debug.Log(choque.collider.name);
+            Debug.DrawRay(posicionInicialSensor, choque.point, Color.red);
+        }
+
+        /*
+        choque = Physics2D.Raycast(posicionInicialSensor, (transform.right)*-1, distanciaSensor);
+        if(choque.collider != null)
+        {
+            Debug.Log("frente");
+            Debug.DrawLine(posicionInicialSensor, choque.point);
+        }*/
+
     }
 
     void FixedUpdate()
     {
+        
         if(control)
-        {
+        {   //Solamente si e desea mover el rover manualmente
             MoverRobot();
             RotarRobot();
         }
+        
+        
+        
     }
 
     void Distancia()
@@ -104,7 +136,10 @@ public class MovimientoTopDown : MonoBehaviour
     }
 
 
-
+    void Sensores()
+    {
+        
+    }
 
     
     /*

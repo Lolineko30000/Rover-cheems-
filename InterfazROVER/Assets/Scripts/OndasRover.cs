@@ -20,10 +20,10 @@ public class OndasRover : MonoBehaviour
     private void Update()
     {
         //temporal
-        //if(Input.GetButtonDown("Fire1"))
-        //{
+        if(Input.GetButtonDown("Fire1"))
+        {
              StartCoroutine(LanzarOnda());
-        //}
+        }
     }
 
     private IEnumerator LanzarOnda()
@@ -38,9 +38,9 @@ public class OndasRover : MonoBehaviour
         float derecha = Vector3.Distance(ondaDerecha.transform.position, transform.position);
         float izquierdo = Vector3.Distance(ondaIzquierda.transform.position, transform.position);
 
-        Debug.Log("Derecho= " + derecho);
-        Debug.Log("Derecha= " + derecha);
-        Debug.Log("Izquierda= " + izquierdo);
+        //Debug.Log("Derecho= " + derecho);
+        //Debug.Log("Derecha= " + derecha);
+        //Debug.Log("Izquierda= " + izquierdo);
 
     }
 }
