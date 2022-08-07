@@ -1,4 +1,3 @@
-/*
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +5,10 @@ using UnityEngine;
 namespace Sensor
 {
     
-    public class Onda : MonoBehaviour
+    public class OndaRecto : MonoBehaviour
     {
         //Velocidad a la que se movera la onda.
-        [SerializeField] private float velocidad;
+        [SerializeField] private float velocidad = 5f;
 
         private void Update()
         {
@@ -24,14 +23,10 @@ namespace Sensor
 
         private void OnTriggerEnter2D()
         {
-            GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().sensores[0] = 1;
-            Debug.Log(GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().sensores[0]);
-            Debug.Log(GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().sensores[1]);
-            Debug.Log(GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().sensores[1]);
+            GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().sensores[1] = Vector3.Distance(GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().transform.position, transform.position);
             Destroy(this.gameObject);
         }
 
     }
 
 }
-*/

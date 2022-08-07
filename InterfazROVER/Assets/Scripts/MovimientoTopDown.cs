@@ -19,17 +19,16 @@ public class MovimientoTopDown : MonoBehaviour
     //Cordenadas de los nodos
     public List<Transform> nodos;
 
-    //Variable necesarias para los sensores por raycast
-    public float distanciaSensor = 5f;
-    public float posicionSensorRover = 1f;  
+    //Arreglo donde se guarda el resultado de la colision de los sensores.
+    public float[] sensores;
     
 
     void Start() 
     {
         RoverDowneyJr = GetComponent<Rigidbody2D>();
-        
-        //Lineas especiales para obtener el camino del script del grafo.
+        sensores = new float[3] {0f,0f,0f};
 
+        //Lineas especiales para obtener el camino del script del grafo.
         if(!control)
         {
             //Importamos los datos de otro script de grafo 
@@ -40,6 +39,8 @@ public class MovimientoTopDown : MonoBehaviour
             //control = true;
             index = 0;
         }
+
+        
     }
 
     private void InputEntrada()
@@ -91,25 +92,7 @@ public class MovimientoTopDown : MonoBehaviour
             }
         }
 
-        RaycastHit2D choque;
-        Vector2 posicionInicialSensor = transform.position;
-        posicionInicialSensor.x += posicionSensorRover;
-
-        choque = Physics2D.Raycast(posicionInicialSensor, transform.forward, distanciaSensor);
-        if(choque.collider != null)
-        {
-            Debug.Log("derecha");
-            Debug.Log(choque.collider.name);
-            Debug.DrawRay(posicionInicialSensor, choque.point, Color.red);
-        }
-
-        /*
-        choque = Physics2D.Raycast(posicionInicialSensor, (transform.right)*-1, distanciaSensor);
-        if(choque.collider != null)
-        {
-            Debug.Log("frente");
-            Debug.DrawLine(posicionInicialSensor, choque.point);
-        }*/
+        Debug.Log(sensores[0] + " " + sensores[1] + " " + sensores[2] );
 
     }
 
