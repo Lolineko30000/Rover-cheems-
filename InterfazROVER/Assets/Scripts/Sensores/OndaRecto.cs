@@ -21,10 +21,13 @@ namespace Sensor
 
 
 
-        private void OnTriggerEnter2D()
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().sensores[1] = Vector3.Distance(GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().transform.position, transform.position);
-            Destroy(this.gameObject);
+            if (collision.gameObject.tag != "ROVER" && collision.gameObject.tag != "ONDA")
+            {
+                GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().sensores[1] = Vector3.Distance(GameObject.Find("ROVER").GetComponent<MovimientoTopDown>().transform.position, transform.position);
+                Destroy(this.gameObject);
+            }
         }
 
     }

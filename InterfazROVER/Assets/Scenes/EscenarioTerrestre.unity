@@ -1228,7 +1228,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1089159687
 Transform:
   m_ObjectHideFlags: 0
@@ -1380,7 +1380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1269252529
 Transform:
   m_ObjectHideFlags: 0
@@ -1629,7 +1629,7 @@ GameObject:
   - component: {fileID: 1710547367}
   m_Layer: 0
   m_Name: ROVER
-  m_TagString: Untagged
+  m_TagString: ROVER
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1652,8 +1652,7 @@ MonoBehaviour:
   index: 0
   camino: 
   nodos: []
-  distanciaSensor: 5
-  posicionSensorRover: 1
+  sensores: []
 --- !u!50 &1710547363
 Rigidbody2D:
   serializedVersion: 4
@@ -1781,7 +1780,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1710547361}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21f2133dd7cde8a438a1f9d739f6d958, type: 3}
   m_Name: 
@@ -1789,7 +1788,12 @@ MonoBehaviour:
   controlOndaDerecha: {fileID: 2036616944}
   controlOndaIzquierda: {fileID: 1005745917}
   controlOndaDerecho: {fileID: 1547153445}
-  onda: {fileID: 2888401064570628239, guid: 7882ad1c64cb2424290b1b200afe3df4, type: 3}
+  ondaDerecha: {fileID: 2888401064570628239, guid: 89ca7d518da9a114cbbd0bcbd13a6024,
+    type: 3}
+  ondaDerecho: {fileID: 2888401064570628239, guid: d83244fe7d481e14ea9e7d6301768de7,
+    type: 3}
+  ondaIzquierda: {fileID: 2888401064570628239, guid: c3225adbc43253748b7141f12d4750dd,
+    type: 3}
 --- !u!1 &1814502214
 GameObject:
   m_ObjectHideFlags: 0
@@ -1854,7 +1858,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1895972268
 Transform:
   m_ObjectHideFlags: 0
