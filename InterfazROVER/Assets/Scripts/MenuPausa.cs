@@ -28,12 +28,12 @@ public class MenuPausa : MonoBehaviour
                 Pausa();
     }
 
+    //Detiene la ejecucion del programa y escondo elementos del menu de pausa
     public void Pausa() 
     { 
-        Time.timeScale = 0f; //Esta linea pausa el juego
+        Time.timeScale = 0f; //Esta linea pausa la interfaz
         juegoPausado = true;
 
-        //Esconde y/o muestra los elementos del menu de pausa
         imagenFondoPausa.SetActive(false);
         botonPausa.SetActive(false);
 
@@ -45,12 +45,12 @@ public class MenuPausa : MonoBehaviour
         botonSalir.SetActive(true);
     }
 
+    //Reanuda la ejecucion de la interfaz
     public void Play()
     { 
-        Time.timeScale = 1f; //Esta linea reaunda el juego
+        Time.timeScale = 1f; //Esta linea reaunda los procesos de la interfaz
         juegoPausado = false;
 
-        //Esconde y/o muestra los elementos del menu de pausa
         imagenFondoPausa.SetActive(true);
         botonPausa.SetActive(true);
 
@@ -62,6 +62,7 @@ public class MenuPausa : MonoBehaviour
         botonSalir.SetActive(false);
     }
 
+    //Reinicia la escena a su estado inicial
     public void Reiniciar()
     {
         Time.timeScale = 1f;
@@ -71,6 +72,7 @@ public class MenuPausa : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    //Cambia el algoritmo autonomo utilizado
     public void cambiarModoControl()
     {
         Debug.Log("Funcion en proceso de creacion!");

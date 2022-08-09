@@ -13,27 +13,18 @@ public class GeneradorEscena : MonoBehaviour
     [SerializeField] private int numeroDecoraciones;
     [SerializeField] private int ancho;
     [SerializeField] private int largo;
-    //private int offsetScene = 5;
 
     private int[,] matrizEscenario;
 
-    void GenerarMatrizEscenario()
-    {
-        this.matrizEscenario = new int[this.ancho, this.largo];
-
-        for(int i = 0; i < this.ancho; i++)
-            for(int j = 0; j < this.largo; j++)
-                this.matrizEscenario[i, j] = 1;
-    }
-
+    //Genera los tiles de base del escenario
     void GenerarEscenario()
     {
         for(int i = 0; i < this.ancho; i++)
             for(int j = 0; j < this.largo; j++)
-                if(this.matrizEscenario[i,j] == 1)
-                    this.tilemap.SetTile(new Vector3Int(i, j, 0), this.tileEscenario);
+                this.tilemap.SetTile(new Vector3Int(i, j, 0), this.tileEscenario);
     }
 
+    //Genera decoracion aleatoriamente
     void GenerarDecoracion()
     {
         for(int i = 0; i < numeroDecoraciones; i++)
@@ -51,7 +42,8 @@ public class GeneradorEscena : MonoBehaviour
 
     void Start()
     {   
-        this.GenerarMatrizEscenario();
+        this.matrizEscenario = new int[this.ancho, this.largo]; //Declara la matriz del escenario
+
         this.GenerarEscenario();
         this.GenerarDecoracion();
     }

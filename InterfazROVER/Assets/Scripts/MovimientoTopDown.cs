@@ -11,6 +11,7 @@ public class MovimientoTopDown : MonoBehaviour
     private float inputHorizontal, inputVertical;
     private Rigidbody2D RoverDowneyJr;
     
+    private float anguloGiro;
 
     public bool control;
     public int index;
@@ -21,7 +22,6 @@ public class MovimientoTopDown : MonoBehaviour
 
     //Arreglo donde se guarda el resultado de la colision de los sensores.
     public float[] sensores;
-    
 
     void Start() 
     {
@@ -39,16 +39,16 @@ public class MovimientoTopDown : MonoBehaviour
             //control = true;
             index = 0;
         }
-
-        
     }
 
+    //Recibe la entrada del teclado
     private void InputEntrada()
     {
         inputHorizontal = Input.GetAxisRaw("Horizontal");
         inputVertical = Input.GetAxisRaw("Vertical");
     }
 
+    //Permite el movimiento del robot a partir de la entrada del teclado
     private void MoverRobot()
     {
         if(inputVertical == 0)
@@ -59,14 +59,26 @@ public class MovimientoTopDown : MonoBehaviour
             RoverDowneyJr.velocity = -transform.up * velocidadMovimiento;
     }
 
-    private void RotarRobot()
+    //Rota al robot dependiendo de la entrada recibida y devuelve un float que describe el angulo de giro del robot
+    private float RotarRobot()
     {
-        //if(inputVertical == 0)
-        //    return;
+        /*
+        if(inputVertical == 0)
+            return;*/
+
+        if(inputHorizontal == 0)
+            return -1f;
 
         float rotacion = -inputHorizontal * velocidadRotacion;
         transform.Rotate(Vector3.forward * rotacion);
-  
+
+        anguloGiro -= rotacion;
+        if(anguloGiro > 360)
+            anguloGiro -= 360;
+        else if(anguloGiro < 0)
+            anguloGiro = 360 - rotacion;
+
+        return anguloGiro;
     }
 
     void Update()
@@ -105,8 +117,6 @@ public class MovimientoTopDown : MonoBehaviour
             RotarRobot();
         }
         
-        
-        
     }
 
     void Distancia()
@@ -123,34 +133,5 @@ public class MovimientoTopDown : MonoBehaviour
     {
         
     }
-
     
-    /*
-    void Update()
-    {
-        float inputHorizontal = Input.GetAxisRaw("Horizontal");
-        float inputVertical = Input.GetAxisRaw("Vertical");
-        //Esta linea indica posicion, direccionMovimiento = vector(x,y) ; 0 < x < 1 & 0 < y < 1
-        direccionMovimiento = new Vector2(inputHorizontal, inputVertical);
-        float magnitudEntrada = Mathf.Clamp01(direccionMovimiento.magnitude);
-        direccionMovimiento.Normalize();
-
-        transform.Translate(direccionMovimiento * velocidadMovimiento * magnitudEntrada * Time.deltaTime, Space.World);
-
-        /*
-        if(direccionMovimiento != Vector2.zero)
-        {
-            Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, direccionMovimiento);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, velocidadRotacion * Time.deltaTime);
-        }
-        //
-    }
-
-    /*
-    private void FixedUpdate() //Esta función se ejecuta 50 veces por segundo
-    {
-        //Esta parte del codigo es la que permite que el robot se mueva
-        RoverDowneyJr.MovePosition(RoverDowneyJr.position + direccionMovimiento * velocidadMovimiento * Time.fixedDeltaTime);
-    }
-    //*/
 }

@@ -7,7 +7,6 @@ public class GeneradorColliders : MonoBehaviour
 {
     [SerializeField] private Tilemap tilemap;  
     [SerializeField] private Tile tileBarrera;
-    //[SerializeField] private Tile tileObstaculo;   
     public int anchoMapa;
     public int largoMapa;
 
@@ -19,7 +18,7 @@ public class GeneradorColliders : MonoBehaviour
         this.GenerarColliders();
     }
 
-    void GenerarMatrizColliders() //Barreras
+    void GenerarMatrizColliders() //Genera Matriz para las barreras
     {
         this.matrizColliders = new int[this.anchoMapa, this.largoMapa];
 
@@ -42,6 +41,8 @@ public class GeneradorColliders : MonoBehaviour
     //Grid de tamanio 
     // anchomapa = 31
     // largomapa = 23
+
+    //Genera laberinto para algoritmo Dijkestra (Tomado del reto de los electricos)
     void GenerarLaberinto()
     {
 
@@ -74,9 +75,6 @@ public class GeneradorColliders : MonoBehaviour
             if( (j >= 8 && j <= 14) )
                 this.matrizColliders[24,j] = 1;
         }
-
-
-
 
         for(int i = 0; i < this.anchoMapa; i++)
         {
@@ -126,10 +124,8 @@ public class GeneradorColliders : MonoBehaviour
             {
                 this.matrizColliders[i,17] = 1;
                 this.matrizColliders[i,18] = 1;
-            }
-            
+            }            
         }
-
 
     }
 

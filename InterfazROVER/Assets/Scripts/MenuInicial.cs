@@ -16,8 +16,6 @@ public class MenuInicial : MonoBehaviour
     [SerializeField] private GameObject botonMarte;
     [SerializeField] private GameObject botonLuna;
 
-    //[SerializeField] private GameObject botonConectividad;
-
     bool enSelector = false;
 
     private void Update()
@@ -27,6 +25,7 @@ public class MenuInicial : MonoBehaviour
                 SelectorEntorno(false);
     }
     
+    //Activa o desactiva la vista de los botones del menu
     public void SelectorEntorno(bool interruptor)
     {
         botonInicio.SetActive(!interruptor);
@@ -42,21 +41,25 @@ public class MenuInicial : MonoBehaviour
         enSelector = true;
     }
 
+    //Cambia la escena por la tierra
     public void EscenaTerrestre()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 4);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
+    //Cambia la escena a marte
     public void EscenaMarciana()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
     }
 
+    //Cambia la escena a la luna
     public void EscenaLunar()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 3);
     }
 
+    //Se supone mostraba los creditos
     public void Creditos()
     {
         Debug.Log("En proceso de construccion!");

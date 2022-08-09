@@ -1305,8 +1305,8 @@ GameObject:
   m_Component:
   - component: {fileID: 656150225}
   - component: {fileID: 656150224}
-  - component: {fileID: 656150226}
   - component: {fileID: 656150223}
+  - component: {fileID: 656150227}
   m_Layer: 0
   m_Name: EscenaGenerada
   m_TagString: Untagged
@@ -1360,7 +1360,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &656150226
+--- !u!114 &656150227
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1369,7 +1369,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 656150222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acee97f291a7a7448b5d897622b8fc81, type: 3}
+  m_Script: {fileID: 11500000, guid: eb29ce5336fe42045996dcdf3025b282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 500917306}
