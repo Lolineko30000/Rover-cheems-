@@ -119,12 +119,6 @@ public class MovimientoTopDown : MonoBehaviour
     }
 
 
-    void Sensores()
-    {
-        
-    }
-
-    
     /*
     void Update()
     {
